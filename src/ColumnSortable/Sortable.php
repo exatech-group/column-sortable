@@ -218,6 +218,10 @@ trait Sortable
     {
         $joinType = config('columnsortable.join_type', 'leftJoin');
 
-        return $query->select($parentTable.'.*')->{$joinType}($relatedTable, $parentPrimaryKey, '=', $relatedPrimaryKey);
+        if ($query->getQuery()->columns === null) {
+            $query->select($parentTable.'.*');
+        }
+
+        return $query->{$joinType}($relatedTable, $parentPrimaryKey, '=', $relatedPrimaryKey);
     }
 }
